@@ -1,0 +1,20 @@
+name: Update README with private repo stats
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Runs once every hour
+  workflow_dispatch:  # Allows manual trigger
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Fetch GitHub Readme Stats and update README
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          curl -H "Authorization: token $GH_TOKEN" \
+          https://github-readme-stats.vercel.app/api/top-langs/?username=Umair-Khurshid&count_private=true&include_all_commits=true&show_icons=true&theme=dark > README.md
